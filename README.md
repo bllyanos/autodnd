@@ -27,13 +27,27 @@ When DND mode is active, notifications become invisible but are still received i
 ```bash
 git clone <repository-url>
 cd dnd
-go build -o dnd .
+make build
 ```
+
+### System installation
+
+```bash
+make install
+```
+
+This will build the binary and install it to `/usr/bin/autodnd` (requires sudo).
 
 ### Usage
 
+After installation:
 ```bash
-./dnd
+autodnd
+```
+
+Or run directly after building:
+```bash
+./build/autodnd
 ```
 
 The tool will:
@@ -58,7 +72,13 @@ This creates an `auto_dnd` mode where notifications are invisible but still logg
 ## Development
 
 ```bash
-# Run directly
+# Build the project
+make build
+
+# Install system-wide
+make install
+
+# Run directly without building
 go run .
 
 # Format code
