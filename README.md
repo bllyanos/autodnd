@@ -70,7 +70,3 @@ go test ./...
 # Clean dependencies
 go mod tidy
 ```
-
-## License
-
-[Add your license here]
