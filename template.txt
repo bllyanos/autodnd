@@ -1,0 +1,4 @@
+# --generated auto_dnd
+[mode=auto_dnd]
+invisible=1
+# --end
