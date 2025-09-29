@@ -50,7 +50,6 @@ func parseResult(output string) []string {
 
 func EnsureModeInstalled() {
 	homedir, err := os.UserHomeDir()
-
 	if err != nil {
 		log.Fatal("could not open your homedir")
 	}
@@ -60,18 +59,25 @@ func EnsureModeInstalled() {
 		log.Fatalf("could not open the %s", configPath)
 	}
 
-	log.Printf("config found")
-
 	log.Println("checking if auto_dnd is installed in the mako config")
 
 	configFile, err := os.OpenFile(configPath, os.O_RDWR, os.ModeAppend)
 
 	if err != nil {
-		log.Fatalf("could not read the config file")
+		log.Fatalf("could not open the config file")
 	}
+
 	defer configFile.Close()
 
-	configData, err := io.ReadAll(configFile)
+	TryAppendToConfig(configFile, template)
+}
+
+func TryAppendToConfig(file *os.File, template string) {
+	configData, err := io.ReadAll(file)
+
+	if err != nil {
+		log.Fatalf("could not read the config file")
+	}
 
 	if strings.Contains(string(configData), template) {
 		log.Println("auto_dnd already installed in config")
@@ -79,7 +85,7 @@ func EnsureModeInstalled() {
 		log.Println("auto_dnd is missing from config, appending the config")
 
 		strToWrite := "\n" + template + "\n"
-		configFile.WriteString(strToWrite)
+		file.WriteString(strToWrite)
 
 		log.Println("reloading makoctl")
 		exec.Command("makoctl", "reload")
